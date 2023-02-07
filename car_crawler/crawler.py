@@ -75,6 +75,9 @@ def get_detalhe_carros(host, lista_link_carros):
         if len(tags_caracteristicas) == 0:
             tags_caracteristicas = soup.find_all('span', class_ ="lead text-muted")
 
+        if len(tags_caracteristicas) == 0:
+           tags_caracteristicas = soup.find_all('strong', class_ ="ligth")
+
         #for kc, carac in enumerate(list(tags_caracteristicas)):
         #    print(carac.getText())
         
@@ -123,3 +126,31 @@ for host in hosts:
     print(f'Encerrando {host}')
     print('============================')
 
+
+
+
+#Exceção ARIVES
+host = 'https://arives.com.br'
+
+response = rq.get(f'{host}/multipla/ajaxlistPaged/page/200')
+
+soup = BeautifulSoup(response.text, 'html.parser')
+print(f'Buscando lista carros {host}')
+lista_link_carros = soup.find_all('a', class_='grey-text text-darken-4 swell34 class-avant')
+
+links = []
+for link in lista_link_carros:
+    links.append(link['href'])
+print(f'Localizados {len(links)} carros')    
+
+lista_carros = []
+
+print(f'Buscando detalhes...')
+lista_carros = get_detalhe_carros(host, links)
+
+print(f'Salvando')
+df = pd.DataFrame(lista_carros)
+engine = create_engine('postgresql://root:root@localhost:5432/local')
+df.to_sql('carro', engine, if_exists='append', index=False)
+print(f'Encerrando {host}')
+print('============================')
