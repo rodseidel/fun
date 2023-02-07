@@ -46,12 +46,15 @@ def get_lista_carros(host):
 
     return list(set(lista_link_carros))
 
-def get_detalhe_carros(host, lista_link_carros):
+def get_detalhe_carros(host, lista_link_carros, log=False):
 
     lista_carros = []
 
     for k, link in enumerate(lista_link_carros):
         response = rq.get(f'{host}/{link}')
+        
+        if log:
+            print(f'Buscando {host}/{link}')
 
         soup = BeautifulSoup(response.text, 'html.parser')
 
@@ -146,7 +149,7 @@ print(f'Localizados {len(links)} carros')
 lista_carros = []
 
 print(f'Buscando detalhes...')
-lista_carros = get_detalhe_carros(host, links)
+lista_carros = get_detalhe_carros(host, links, log=True)
 
 print(f'Salvando')
 df = pd.DataFrame(lista_carros)
