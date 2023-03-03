@@ -110,8 +110,7 @@ def get_detalhe_carros(host, lista_link_carros, log=False):
 import pandas as pd
 from sqlalchemy import create_engine
 
-hosts = ['https://dakarveiculos.com.br','https://uninovaveiculos.com.br','https://leocaretaveiculos.com.br']
-#'https://vitoriaseminovos.com'
+hosts = ['https://vitoriaseminovos.com','https://dakarveiculos.com.br','https://uninovaveiculos.com.br','https://leocaretaveiculos.com.br']
 
 for host in hosts:
     
